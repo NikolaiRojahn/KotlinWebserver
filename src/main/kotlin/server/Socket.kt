@@ -31,7 +31,7 @@ class Response(val outputStream: OutputStream)
 
     fun append(text:String)
     {
-        body.append("\n" + text)
+        body.append(text)
     }
     fun send()
     {
@@ -39,7 +39,8 @@ class Response(val outputStream: OutputStream)
             HTTP/1.1 200 OK
             Content-Type: text/html; charset=UTF-8
             Content-length: ${body.length}
-            Connection: close   
+            Connection: close
+             
                                  
         """.trimIndent()
 
