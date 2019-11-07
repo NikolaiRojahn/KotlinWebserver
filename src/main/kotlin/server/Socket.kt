@@ -31,7 +31,7 @@ class Response(val outputStream: OutputStream)
 
     fun append(text:String)
     {
-        body.append(text)
+        body.append("\n" + text)
     }
     fun send()
     {
