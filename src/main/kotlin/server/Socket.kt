@@ -39,13 +39,12 @@ class Response(val outputStream: OutputStream)
             HTTP/1.1 200 OK
             Content-Type: text/html; charset=UTF-8
             Content-length: ${body.length}
-            Connection: close
-             
-                                 
+            Connection: close    
         """.trimIndent()
 
         val writer = outputStream.bufferedWriter();
         writer.write(head)
+        writer.newLine()
         writer.newLine()
         writer.write(body.toString())
         writer.close()
