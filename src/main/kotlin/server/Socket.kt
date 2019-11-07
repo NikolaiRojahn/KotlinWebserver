@@ -35,8 +35,7 @@ class Response(val outputStream: OutputStream)
     }
     fun send()
     {
-        val head = """
-            <!DOCTYPE html>
+        val head = """            
             HTTP/1.1 200 OK
             Content-Type: text/html; charset=UTF-8
             Content-length: ${body.length}
@@ -55,6 +54,7 @@ class Response(val outputStream: OutputStream)
 class Homepage() {
     fun generate(name: String): String {
         return """
+            <!DOCTYPE html>
             <html>
                 <head></head>
                 <body>
