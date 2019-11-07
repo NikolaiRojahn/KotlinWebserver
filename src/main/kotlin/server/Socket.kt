@@ -54,7 +54,6 @@ class Response(val outputStream: OutputStream)
 class Homepage() {
     fun generate(name: String): String {
         return """
-            <!DOCTYPE html>
             <html>
                 <head></head>
                 <body>

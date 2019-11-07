@@ -3,32 +3,32 @@ package server
 import java.net.ServerSocket
 import kotlin.concurrent.thread
 
-class Server (val port: Int = 4711){
+class Server(val port: Int = 4711) {
     var running = true
 
-    fun handle(request:Request, response:Response){
+    fun handle(request: Request, response: Response) {
 //        println(request.resource)
         val homepage: Homepage = Homepage()
         response.append(homepage.generate(request.resource.substring(1)))
         response.send()
     }
 
-    fun start(){
+    fun start() {
         val serverSocket = ServerSocket(port)
-        while(running)
-        {
+        while (running) {
             val socket = serverSocket.accept()
-            thread{
+            thread {
                 handle(Request(socket.getInputStream()), Response(socket.getOutputStream()))
             }
         }
     }
 
-    fun stop(){
+    fun stop() {
         TODO("implement Server().stop()")
     }
 }
-fun main(){
+
+fun main() {
     println("Starting server...")
     Server().start()
 }
