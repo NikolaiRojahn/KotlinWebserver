@@ -21,8 +21,6 @@ class ChoirContent:WebContent
     // PUT /member
     fun putMember(member: Member): Member = TODO("TBD")
 
-
-
 }
 
 // simpel DTO eksempel:

@@ -35,7 +35,7 @@ class Response(val outputStream: OutputStream)
     }
     fun send()
     {
-        val head = """
+        val head = """            
             HTTP/1.1 200 OK
             Content-Type: text/html; charset=UTF-8
             Content-length: ${body.length}
