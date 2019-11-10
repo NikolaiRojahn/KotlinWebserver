@@ -2,7 +2,6 @@ package server
 
 interface WebContent
 {
-
     fun save() // persist the content to file/database
 }
 
@@ -12,7 +11,7 @@ interface WebContent
 class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    val members:List<Member> = listOf<Member>()
+    val members:List<Member> = mutableListOf<Member>()
 
     override fun save() {
         // Here we will persist the collection to a file.
