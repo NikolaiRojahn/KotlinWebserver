@@ -3,6 +3,8 @@ package server
 import java.net.ServerSocket
 import kotlin.concurrent.thread
 
+enum class Method{GET, PUT, POST, DELETE}
+
 class Server (val port: Int = 4711){
     var running = true
 
