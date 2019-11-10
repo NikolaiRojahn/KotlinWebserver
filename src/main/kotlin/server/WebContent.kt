@@ -12,7 +12,7 @@ interface WebContent
 class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    val members:List<Member> = List<Member>()
+    val members:List<Member> = listOf<Member>()
 
     override fun save() {
         // Here we will persist the collection to a file.
