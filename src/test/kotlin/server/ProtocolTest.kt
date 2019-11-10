@@ -13,12 +13,11 @@ class ProtocolTest
     """.trimIndent()
     val responseText = """
             HTTP/1.1 200 OK
-            Content-Type: text/html; charset=UTF-8 
+            Content-Type: text/html; charset=UTF-8
             Content-length: 18
             Connection: close
             
-            <p>Hello Kurt!</p>
-        """.trimIndent()
+            <p>Hello Kurt!</p>""".trimIndent()
 
     @Test
     fun testRequestResource(){
