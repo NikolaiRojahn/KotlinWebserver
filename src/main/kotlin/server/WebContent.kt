@@ -12,7 +12,7 @@ interface WebContent
 class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    val members:List<Member> = listOf<Member>()
+    val members:MutableList<Member> = mutableListOf()
 
     override fun save() {
         // Here we will persist the collection to a file.
@@ -33,7 +33,11 @@ class ChoirContent(val filename:String):WebContent
     fun postMember(member: Member): Member = TODO("TBD") // If we add to the collection.
 
     // DELETE /member
-    fun deleteMember(member: Member): Member = TODO("TBD")
+    fun deleteMember(member: Member): Boolean{
+        val index = members.indexOfFirst { m -> m.id == member.id }
+        members.removeAt(index)
+        return index != -1
+    }
 }
 
 // simpel DTO eksempel:
