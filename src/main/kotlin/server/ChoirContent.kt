@@ -4,11 +4,19 @@ package server
  * @param filename The filename to persist data to.
  */
 
-class ChoirContent(val filename:String):WebContent
+//class ChoirContent(val filename:String):WebContent
+class ChoirContent():WebContent
 {
     // Local collection of members.
     val members:MutableList<MemberDTO> = mutableListOf()
     val memberIsNull = "Given member is null"
+
+    fun setDummyMembers(){
+        members.add(MemberDTO(1, "Nikolai"))
+        members.add(MemberDTO(2, "Claus"))
+        members.add(MemberDTO(3, "Jörg"))
+        members.add(MemberDTO(4, "Morten"))
+    }
 
     override fun save() {
         // Here we will persist the collection to a file.
@@ -20,7 +28,7 @@ class ChoirContent(val filename:String):WebContent
     fun getMember():List<MemberDTO> = members
 
     // GET /member/3
-    fun getMember(id: Int):MemberDTO? = members.firstOrNull { m -> m.id == id }
+    fun getMember(id: Int): MemberDTO? = members.firstOrNull { m -> m.id == id }
 
     // PUT /member
     fun putMember(member: MemberDTO): MemberDTO {
@@ -40,9 +48,18 @@ class ChoirContent(val filename:String):WebContent
     }
 
     // DELETE /member
-    fun deleteMember(member: MemberDTO): Boolean{
+    fun deleteMember(id: Int): Boolean{
+        val member: MemberDTO? = getMember(id)
         val index = members.indexOfFirst { m -> m.id == member.id }
         members.removeAt(index)
         return index != -1
     }
+}
+
+fun main() {
+    val content = ChoirContent()
+    content.setDummyMembers()
+    println(content.deleteMember(3))
+    //listFunctions(content)
+    //println(callFunction(content, Method.GET, "/member"))
 }
