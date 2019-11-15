@@ -61,10 +61,12 @@ class ChoirContent():WebContent
 
 fun main() {
     val content = ChoirContent()
+    val json = JSON()
     content.setDummyMembers()
-    println(content.deleteMember(3))
-    println(content.getMember())
-    println(content.putMember(MemberDTO(3,"Jørgen")))
-    //listFunctions(content)
+    //println(content.deleteMember(3))
+    //println(content.getMember())
+    //println(content.putMember(MemberDTO(3,"Jørgen3")))
+    //println(content.getMember())
+    println(json.mapToJson(content.members))    //listFunctions(content)
     //println(callFunction(content, Method.GET, "/member"))
 }
