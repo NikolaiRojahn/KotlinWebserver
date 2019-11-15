@@ -1,5 +1,6 @@
 package server
 
+//DENNE SERVER ER IKKE SAT OP TIL AT KØRE METODER FRA CHOIRCONTENT ENDNU - DE KAN TESTES/KØRES FRA MAIN METODEN I CHOIR CONTENT!!!
 import java.net.ServerSocket
 import kotlin.concurrent.thread
 import server.ChoirContent

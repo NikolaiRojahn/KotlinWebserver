@@ -27,7 +27,7 @@ class ChoirContent():WebContent
     // GET /member
     fun getMember():List<MemberDTO> = members
 
-    // GET /member/3
+    // GET /member/id
     fun getMember(id: Int): MemberDTO? = members.firstOrNull { m -> m.id == id }
 
     // PUT /member
@@ -47,12 +47,15 @@ class ChoirContent():WebContent
             return member
     }
 
-    // DELETE /member
+    // DELETE /member/id
     fun deleteMember(id: Int): Boolean{
         val member: MemberDTO? = getMember(id)
-        val index = members.indexOfFirst { m -> m.id == member.id }
-        members.removeAt(index)
-        return index != -1
+        if(member != null) {
+            val index = members.indexOfFirst { m -> m.id == member.id }
+            members.removeAt(index)
+            return true
+        }
+        return false
     }
 }
 
@@ -60,6 +63,7 @@ fun main() {
     val content = ChoirContent()
     content.setDummyMembers()
     println(content.deleteMember(3))
+    println(content.getMember())
     //listFunctions(content)
     //println(callFunction(content, Method.GET, "/member"))
 }
