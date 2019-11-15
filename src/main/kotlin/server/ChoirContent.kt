@@ -9,7 +9,7 @@ class ChoirContent():WebContent
 {
     // Local collection of members.
     val members:MutableList<MemberDTO> = mutableListOf()
-    val memberIsNull = "Given member is null"
+    val nullMessage = "Given member is null"
 
     fun setDummyMembers(){
         members.add(MemberDTO(1, "Nikolai"))
@@ -32,19 +32,19 @@ class ChoirContent():WebContent
 
     // PUT /member
     fun putMember(member: MemberDTO): MemberDTO {
-        if(member == null) { memberIsNull }
+        if(member == null) { nullMessage }
         if(members.contains(member)) {
             members[members.indexOf(member)] = member
             return member
         }
-            return postMember(member)
+        return postMember(member)
     }
 
     // POST /member
     fun postMember(member: MemberDTO): MemberDTO {
-        if(member == null) { memberIsNull }
-            members.add(member)
-            return member
+        if(member == null) { nullMessage }
+        members.add(member)
+        return member
     }
 
     // DELETE /member
@@ -59,7 +59,7 @@ class ChoirContent():WebContent
 fun main() {
     val content = ChoirContent()
     content.setDummyMembers()
-    println(content.deleteMember(3))
+    println(content.putMember(MemberDTO(3,"Jørgen")))
     //listFunctions(content)
     //println(callFunction(content, Method.GET, "/member"))
 }
