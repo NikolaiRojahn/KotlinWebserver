@@ -1,17 +1,18 @@
 package server
 
-import java.lang.reflect.Member
-
+interface WebContent{
+    fun save()
+}
 /**
  * @param filename The filename to persist data to.
  */
-
-//class ChoirContent(val filename:String):WebContent
-class ChoirContent():WebContent
+class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    val members:MutableMap<Int, MemberDTO> = mutableMapOf()
+    var members:MutableMap<Int, MemberDTO> = mutableMapOf()
     val nullMessage = "Given member is null"
+
+    fun setNewMembers(value:MutableMap<Int, MemberDTO>){members = value}
 
     fun setDummyMembers(){
         members.put(1, MemberDTO(1, "Nikolai"))
@@ -30,10 +31,13 @@ class ChoirContent():WebContent
     fun getMember():MutableMap<Int, MemberDTO> = members
 
     // GET /member/id
-    fun getMember(id: Int): MemberDTO? {
-        if(!members.containsKey(id)) { nullMessage }
-        return members[id]
-    }
+//    fun getMember(id: Int): MemberDTO? {
+//        if(!members.containsKey(id)) { nullMessage }
+//        return members[id]
+//    }
+
+    // GET /member/3
+    fun getMember(id: Int):MemberDTO? = members.getOrDefault(id, null)
 
     // PUT /member
     fun putMember(member: MemberDTO): MemberDTO {
@@ -57,18 +61,20 @@ class ChoirContent():WebContent
     }
 
     // DELETE /member/id
-    fun deleteMember(id: Int): Boolean{
-        val member: MemberDTO? = getMember(id)
-        if(member != null) {
-            members.remove(member.id)
-            return true
-        }
-        return false
-    }
+//    fun deleteMember(id: Int): Boolean{
+//        val member: MemberDTO? = getMember(id)
+//        if(member != null) {
+//            members.remove(member.id)
+//            return true
+//        }
+//        return false
+//    }
+    // DELETE /member/id
+    fun deleteMember(member: MemberDTO): Boolean = members.remove(member.id) != null
 }
 
 fun main() {
-    val content = ChoirContent()
+    val content = ChoirContent("")
     content.setDummyMembers()
     //println(content.deleteMember(3))
     println(content.getMember())

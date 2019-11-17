@@ -15,10 +15,10 @@ class JSON(){
         return json
     }
 
-    fun toJsonCorrectFormat(what: Any): String{
-        what
-            .
-    }
+//    fun toJsonCorrectFormat(what: Any): String{
+//        what
+//            .
+//    }
 
 
     fun toJson(what: Any): String =
