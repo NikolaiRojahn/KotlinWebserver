@@ -25,7 +25,7 @@ class ChoirContentTest
         // Before each test, copy the members to a new mutable map and give it to content.
         val copy = mutableMapOf<Int, MemberDTO>()
         copy.putAll(members)
-        content.setNewMembers(copy)
+        content.setMembers(copy)
     }
 
     @Test

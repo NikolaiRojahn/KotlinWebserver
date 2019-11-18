@@ -1,37 +1,72 @@
 package server
 
 //DENNE SERVER ER IKKE SAT OP TIL AT KØRE METODER FRA CHOIRCONTENT ENDNU - DE KAN TESTES/KØRES FRA MAIN METODEN I CHOIR CONTENT!!!
+import kotlinx.coroutines.*
 import java.net.ServerSocket
 import kotlin.concurrent.thread
+import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredFunctions
 
 
 enum class Method{GET, PUT, POST, DELETE}
 
-class Server (val port: Int = 4711){
-    var running = true
+/**
+ * Server extends CoroutineScope so we can use Coroutines to handle requests.
+ */
+class Server (val port: Int = 4711) : CoroutineScope{
+    private val job = Job() // Creates a job in an active state. As long as it is active, the server is running.
+    override val coroutineContext: CoroutineContext
+        get() = job
+//    var running = true
 
-    fun handle(request:Request, response:Response){
-//        println(request.resource)
-        val homepage: Homepage = Homepage()
-        response.append(homepage.generate(request.resource.substring(1)))
-        response.send()
-    }
+    suspend fun handle(request:Request, response:Response)
+    {
+        // Coroutines need a context to store state of local variables if suspended.
+        withContext(Dispatchers.Default){
+            /* PSEUDO:
+        1. Get requested resource, http method through reflection.
+        2. Iterate through published contents to see if we have a match.
+        3a. Get the content and call the method if match is found.
+        3b. Tell user to stop bugging us with illegitimate requests.
+        */
 
-    fun start(){
-        val serverSocket = ServerSocket(port)
-        while(running)
-        {
-            val socket = serverSocket.accept()
-            thread{
-                handle(Request(socket.getInputStream()), Response(socket.getOutputStream()))
-            }
+            val homepage: Homepage = Homepage()
+            response.append(homepage.generate(request.resource.substring(1)))
+            response.send()
         }
     }
 
+    fun start(){
+        // Create co-routine essentials.
+
+
+        val serverSocket = ServerSocket(port)
+//        while(running)
+        while(job.isActive)
+        {
+            val socket = serverSocket.accept() // blocks until connection is made.
+            // We will just fire and forget about our coroutine. If it succeeds, super, if not, TS, that's what F5 is for.
+            launch{
+                handle(Request(socket.getInputStream()), Response(socket.getOutputStream()))
+            }
+
+//            thread{
+//                handle(Request(socket.getInputStream()), Response(socket.getOutputStream()))
+//            }
+        }
+    }
+
+    /**
+     * Stops the server. All pending requests handed off to coroutines are destroyed.
+     */
     fun stop(){
-        TODO("implement Server().stop()")
+//        running = false
+        println("Stopping server...")
+        job.cancel() // Cancels the job of having the server listening for incoming connections.
+                     // If we use complete() it will wait for its children coroutines to complete.
+
+        print("Server stopped!")
     }
 
     /**
@@ -76,5 +111,6 @@ class Server (val port: Int = 4711){
 }
 fun main(){
     println("Starting server...")
-    Server().start()
+    val server = Server()
+    server.start()
 }

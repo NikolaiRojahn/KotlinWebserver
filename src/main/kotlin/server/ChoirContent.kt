@@ -9,10 +9,10 @@ interface WebContent{
 class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    var members:MutableMap<Int, MemberDTO> = mutableMapOf()
+    private var members:MutableMap<Int, MemberDTO> = mutableMapOf()
     val nullMessage = "Given member is null"
 
-    fun setNewMembers(value:MutableMap<Int, MemberDTO>){members = value}
+    fun setMembers(value:MutableMap<Int, MemberDTO>){members = value}
 
     fun setDummyMembers(){
         members.put(1, MemberDTO(1, "Nikolai"))
