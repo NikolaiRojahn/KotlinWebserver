@@ -19,15 +19,16 @@ class Server (val port: Int = 4711) : CoroutineScope{
     override val coroutineContext: CoroutineContext
         get() = job
 //    var running = true
+    val webContents: MutableMap<String, WebContent> = mutableMapOf("member" to ChoirContent(""))
 
     suspend fun handle(request:Request, response:Response)
     {
         // Coroutines need a context to store state of local variables if suspended.
         withContext(Dispatchers.Default){
             /* PSEUDO:
-        1. Get requested resource, http method through reflection.
+        1. Build the function name from http method and request resource.
         2. Iterate through published contents to see if we have a match.
-        3a. Get the content and call the method if match is found.
+        3a. Call the method if match is found.
         3b. Tell user to stop bugging us with illegitimate requests.
         */
 
@@ -38,8 +39,6 @@ class Server (val port: Int = 4711) : CoroutineScope{
     }
 
     fun start(){
-        // Create co-routine essentials.
-
 
         val serverSocket = ServerSocket(port)
 //        while(running)
@@ -47,6 +46,7 @@ class Server (val port: Int = 4711) : CoroutineScope{
         {
             val socket = serverSocket.accept() // blocks until connection is made.
             // We will just fire and forget about our coroutine. If it succeeds, super, if not, TS, that's what F5 is for.
+            // launch is the coroutine builder...
             launch{
                 handle(Request(socket.getInputStream()), Response(socket.getOutputStream()))
             }
