@@ -9,10 +9,14 @@ interface WebContent{
 class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    var members:MutableMap<Int, MemberDTO> = mutableMapOf()
+    //var members:MutableMap<Int, MemberDTO> = mutableMapOf()
+    val members = mutableMapOf<Int, MemberDTO>(
+        7 to MemberDTO(7, "Kurt"),
+        17 to MemberDTO(17, "Sonja")
+    )
     val nullMessage = "Given member is null"
 
-    fun setNewMembers(value:MutableMap<Int, MemberDTO>){members = value}
+    //fun setNewMembers(value:MutableMap<Int, MemberDTO>){members = value}
 
     fun setDummyMembers(){
         members.put(1, MemberDTO(1, "Nikolai"))
@@ -37,7 +41,17 @@ class ChoirContent(val filename:String):WebContent
 //    }
 
     // GET /member/3
-    fun getMember(id: Int):MemberDTO? = members.getOrDefault(id, null)
+    fun getMember(id: Int):MutableMap<Int, MemberDTO> {
+        val member:MemberDTO? = members.getOrDefault(id, null)
+        if(member == null) { nullMessage }
+        return mutableMapOf<Int, MemberDTO>((member!!.id to member!!))
+    }
+    /*// GET /member/3
+    fun getMember(id: Int):MemberDTO? {
+        val member = members.getOrDefault(id, null)
+        if(member == null) { nullMessage }
+        return
+    } */
 
     // PUT /member
     fun putMember(member: MemberDTO): MemberDTO {
@@ -70,10 +84,11 @@ class ChoirContent(val filename:String):WebContent
 //        return false
 //    }
     // DELETE /member/id
-    fun deleteMember(member: MemberDTO): Boolean = members.remove(member.id) != null
+    //fun deleteMember(member: MemberDTO): Boolean = members.remove(member.id) != null
+    fun deleteMember(member: MemberDTO): MemberDTO? = members.remove(member.id)
 }
 
-fun main() {
+/*fun main() {
     val content = ChoirContent("")
     content.setDummyMembers()
     //println(content.deleteMember(3))
@@ -84,7 +99,7 @@ fun main() {
     println(content.getMember(3))
     //listFunctions(content)
     //println(callFunction(content, Method.GET, "/member"))
-}
+}*/
 
 
 

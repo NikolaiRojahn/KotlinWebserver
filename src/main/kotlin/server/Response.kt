@@ -20,9 +20,9 @@ class Response(val outputStream: OutputStream)
     {
         val head = """            
             HTTP/1.1 200 OK
-            Content-Type: text/html; charset=UTF-8
+            Content-Type: application/json; charset=UTF-8
             Content-length: ${body.length}
-            Connection: close
+            Connection: keep-alive
         """.trimIndent()
 
         val writer = outputStream.bufferedWriter()

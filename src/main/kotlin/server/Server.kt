@@ -7,15 +7,34 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredFunctions
 
 
-enum class Method{GET, PUT, POST, DELETE}
+enum class Method{GET, PUT, POST, DELETE, NONHTTP}
 
 class Server (val port: Int = 4711){
     var running = true
 
+    val json = JSON()
+    val utils = Utils()
+    val content = ChoirContent("")
+    val reflection = Reflection()
+
     fun handle(request:Request, response:Response){
 //        println(request.resource)
-        val homepage: Homepage = Homepage()
-        response.append(homepage.generate(request.resource.substring(1)))
+        //val homepage: Homepage = Homepage()
+        //response.append(homepage.generate(request.resource.substring(1)))
+        //content.setDummyMembers()
+        val requestMethod: Method = request.method
+
+        //println(json.fromJsonToClass(MemberDTO::class, request.json))
+        //println(MemberDTO(17, "Sonja"))
+
+        when (requestMethod) {
+            Method.GET -> response.append(json.toJsonFromMap(reflection.callFunction(content, request.method, request.resource, null) as MutableMap<Int, MemberDTO>))
+            else -> response.append(json.toJsonFromMap(utils.getMemberAsMap(reflection.callFunction(content, request.method, request.resource, json.fromJsonToClass(MemberDTO::class, request.body)) as MemberDTO)))
+        }
+
+        //println(content.getMember())
+        //println(request.body)
+
         response.send()
     }
 
@@ -34,9 +53,9 @@ class Server (val port: Int = 4711){
         TODO("implement Server().stop()")
     }
 
-    /**
+/*    *//**
      * Evaluates the web request and calls corresponding function in the content if it exists.
-     */
+     *//*
     fun matchFunction(content:Any, method:Method, resource: String): KFunction<*>?
     {
         val parts = resource.split("/")
@@ -72,7 +91,7 @@ class Server (val port: Int = 4711){
 
         }
 
-    }
+    }*/
 }
 fun main(){
     println("Starting server...")
