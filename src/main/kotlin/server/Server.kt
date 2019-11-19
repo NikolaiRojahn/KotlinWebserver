@@ -9,7 +9,7 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredFunctions
 
 
-enum class Method{GET, PUT, POST, DELETE}
+enum class Method{GET, PUT, POST, DELETE, NONHTTP}
 
 /**
  * Server extends CoroutineScope so we can use Coroutines to handle requests.
@@ -20,6 +20,11 @@ class Server (val port: Int = 4711) : CoroutineScope{
         get() = job
 //    var running = true
     val webContents: MutableMap<String, WebContent> = mutableMapOf("member" to ChoirContent(""))
+
+    val json = JSON()
+    val utils = Utils()
+    val content = ChoirContent("")
+    val reflection = Reflection()
 
     suspend fun handle(request:Request, response:Response)
     {
@@ -32,9 +37,18 @@ class Server (val port: Int = 4711) : CoroutineScope{
         3b. Tell user to stop bugging us with illegitimate requests.
         */
 
+            val requestMethod: Method = request.method
 
-            val homepage: Homepage = Homepage()
-            response.append(homepage.generate(request.resource.substring(1)))
+            //println(json.fromJsonToClass(MemberDTO::class, request.json))
+            //println(MemberDTO(17, "Sonja"))
+
+            when (requestMethod) {
+                Method.GET -> response.append(json.toJsonFromMap(reflection.callFunction(content, request.method, request.resource, null) as MutableMap<Int, MemberDTO>))
+                Method.NONHTTP -> response.append("NONHTTP")
+                else -> response.append(json.toJsonFromMap(utils.getMemberAsMap(reflection.callFunction(content, request.method, request.resource, json.fromJsonToClass(MemberDTO::class, request.body)) as MemberDTO)))
+            }
+            /*val homepage: Homepage = Homepage()
+            response.append(homepage.generate(request.resource.substring(1)))*/
             response.send()
         }
     }
@@ -71,10 +85,9 @@ class Server (val port: Int = 4711) : CoroutineScope{
         print("Server stopped!")
     }
 
-    /**
-     * Evaluates the web request and calls corresponding function in the content if it exists.
-     */
-    fun matchFunction(content:Any, method:Method, resource: String): KFunction<*>? {
+/*
+    fun matchFunction(content:Any, method:Method, resource: String): KFunction<*>?
+    {
         val parts = resource.split("/")
         println(parts)
         if (parts.isEmpty()) return null
@@ -107,7 +120,8 @@ class Server (val port: Int = 4711) : CoroutineScope{
 
 
         }
-    }
+
+    }*/
 }
 
 fun main() {
