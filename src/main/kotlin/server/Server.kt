@@ -32,6 +32,7 @@ class Server (val port: Int = 4711) : CoroutineScope{
         3b. Tell user to stop bugging us with illegitimate requests.
         */
 
+
             val homepage: Homepage = Homepage()
             response.append(homepage.generate(request.resource.substring(1)))
             response.send()
@@ -48,6 +49,7 @@ class Server (val port: Int = 4711) : CoroutineScope{
             // We will just fire and forget about our coroutine. If it succeeds, super, if not, TS, that's what F5 is for.
             // launch is the coroutine builder...
             launch{
+
                 handle(Request(socket.getInputStream()), Response(socket.getOutputStream()))
             }
 
@@ -72,26 +74,26 @@ class Server (val port: Int = 4711) : CoroutineScope{
     /**
      * Evaluates the web request and calls corresponding function in the content if it exists.
      */
-    fun matchFunction(content:Any, method:Method, resource: String): KFunction<*>?
-    {
+    fun matchFunction(content:Any, method:Method, resource: String): KFunction<*>? {
         val parts = resource.split("/")
         println(parts)
         if (parts.isEmpty()) return null
-        else{
+        else {
             val methodName = method.toString().toLowerCase() + (parts[0].capitalize())
             println(methodName)
             val type = content::class
-            type.declaredFunctions.forEach{println(it)}
-            type.declaredFunctions.filter{it.name == methodName }.forEach{println(it.parameters.size)} // Husk første arg er objektets egen reference.
-            val function = type.declaredFunctions.filter{it.name == methodName}.filter{it.parameters.size == parts.size}.
-                firstOrNull()
-            if ( function == null ) return null
-            if (function != null && function.parameters.size > 1)
-            {
+            type.declaredFunctions.forEach { println(it) }
+            type.declaredFunctions.filter { it.name == methodName }
+                .forEach { println(it.parameters.size) } // Husk første arg er objektets egen reference.
+            val function =
+                type.declaredFunctions.filter { it.name == methodName }.filter { it.parameters.size == parts.size }
+                    .firstOrNull()
+            if (function == null) return null
+            if (function != null && function.parameters.size > 1) {
                 val p = function.parameters[1]
                 println(function.parameters[1])
                 // her bør vi matche value og parameter type.
-                when(p.type.classifier){
+                when (p.type.classifier) {
                     Int::class -> {
                         val v1 = parts[1].toInt()
                         function.call(content, v1) // fortæller (vel) at funktionen skal kaldes på den givne klasse.
@@ -99,17 +101,16 @@ class Server (val port: Int = 4711) : CoroutineScope{
                     else -> return null
                 }
 
-            }
-            else
+            } else
                 function.call(content)
             return function
 
 
         }
-
     }
 }
-fun main(){
+
+fun main() {
     println("Starting server...")
     val server = Server()
     server.start()
