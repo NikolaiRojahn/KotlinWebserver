@@ -14,5 +14,7 @@ class Request(inputStream: InputStream)
         val parts = firstLine.split(" ")
         resource = parts[1]
         method = Method.valueOf(parts[0])
+
+
     }
 }
