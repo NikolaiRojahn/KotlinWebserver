@@ -41,7 +41,7 @@ class JSON(){
     }
 
     //From JSON methods
-    fun fromJsonToClass(type: KClass<*>, json: String): MemberDTO? {
+    fun fromJsonToClass(type: KClass<*>, json: String): Any? {
         val member = fromJsonToObjectInstance(type, json)
         if (member is MemberDTO)
             return MemberDTO(member.id, member.name)
@@ -89,17 +89,3 @@ class JSON(){
     }
 
 }
-
-/*
-fun main() {
-    val jsonStr = """
-        {
-            "id": 17,
-            "name": "Sonja"
-        }
-        """.trimIndent()
-    val json = JSON()
-    val member = json.fromJsonToObjectInstance(MemberDTO::class, jsonStr)
-    if (member is MemberDTO)
-        println("${member.name} har id ${member.id}" )
-}*/

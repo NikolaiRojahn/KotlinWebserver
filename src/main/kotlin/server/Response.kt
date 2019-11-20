@@ -1,16 +1,11 @@
 package server
 
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 import java.io.OutputStream
 import java.lang.StringBuilder
-import java.net.Socket
 
 class Response(val outputStream: OutputStream)
 {
     val body = StringBuilder()
-    var contentLength = 0
-
 
     fun append(text:String)
     {
@@ -33,12 +28,3 @@ class Response(val outputStream: OutputStream)
         writer.close()
     }
 }
-
-/*
-fun main()
-{
-    val output = ByteArrayOutputStream(1024)
-    val response: Response = Response(output)
-    val writer = output.bufferedWriter()
-}
-*/

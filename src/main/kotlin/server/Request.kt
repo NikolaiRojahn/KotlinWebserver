@@ -1,9 +1,6 @@
 package server
 
-import java.io.BufferedReader
 import java.io.InputStream
-import java.lang.StringBuilder
-import java.nio.charset.Charset
 
 class Request(inputStream: InputStream)
 {
@@ -36,34 +33,5 @@ class Request(inputStream: InputStream)
         if (contentLengthText == null ) body = ""
         else body = inputStream.readString(contentLengthText.toInt())
 
-
-        /*if (method != Method.GET && method != Method.NONHTTP ) {
-            println(headers)
-            val contentLenght = headers["content-length"]!!.toInt()
-            body = inputStream.readString(contentLenght)
-        }*/
     }
 }
-
-
-    /*var body: String = ""
-    val resource: String
-    val method: Method
-*//*    val json = """
-        {
-          "id": 17,
-          "name": "Sonja"
-        }
-        """.trimIndent()*//*
-
-    init{
-        val bufferedReader = inputStream.bufferedReader()
-        var firstLine = bufferedReader.readLine()
-        println(firstLine)
-        val parts = firstLine.split(" ")
-        resource = parts[1]
-        method = Method.valueOf(parts[0])
-        if(method != Method.GET){
-            //TODO
-        }
-        }*/
