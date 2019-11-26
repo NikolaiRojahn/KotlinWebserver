@@ -33,7 +33,6 @@ class ReflectionTest
     fun testGetOneMember()
     {
         content.storeMembers(members)
-        val method = server.Method.GET
         val parts = listOf("member", "7") // expecting to get Kurt
         val expected = members[7]
         val actual = Reflection().callFunction(content,"getMember", parts)
@@ -45,10 +44,28 @@ class ReflectionTest
     fun testGetAllMembers()
     {
         content.storeMembers(members)
-        val method = server.Method.GET
         val parts = listOf("member")
         val expected = members
         val actual : Any? = Reflection().callFunction(content, "getMember", parts)
         Assert.assertEquals(expected, actual)
     }
+
+    @Test
+    fun testPutMember()
+    {
+        content.storeMembers(members)
+        val parts = listOf("member", "7")
+        val expected = "Poul"
+        val result = Reflection().callFunction(content, "putMember", parts, "{id: 7, name: 'Poul'}") as MutableMap<Int, Any?>
+        val actual = (result.get(0) as MemberDTO).name
+        Assert.assertEquals(expected, actual)
+
+    }
+
+    fun testPostMember()
+    {
+
+    }
+
+
 }
