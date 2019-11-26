@@ -31,24 +31,29 @@ class Server (val port: Int = 4711) : CoroutineScope{
         // Coroutines need a context to store state of local variables if suspended.
         withContext(Dispatchers.Default){
             /* PSEUDO:
-        1. Build the function name from http method and request resource.
-        2. Iterate through published contents to see if we have a match.
-        3a. Call the method if match is found.
-        3b. Tell user to stop bugging us with illegitimate requests.
-        */
+            1. Build the function name from http method and request resource.
+            2. Get content from map and check if a method matches.
+            3a. Call the method if match is found.
+            4a. Convert result of method call to json.
+            3b. Tell user to stop bugging us with illegitimate requests.
+            */
 
-            val requestMethod: Method = request.method
+            val reflection = Reflection()
+            val (methodName, parts) = reflection.buildMethodName(request.method, request.resource)
+            val content = webContents[parts?.get(0)]
+            if (content != null) {
+                val result: Any? = methodName?.let {
+                    if (parts != null) {
+                        reflection.callFunction(content as Any, it, parts)
 
-            //println(json.fromJsonToClass(MemberDTO::class, request.json))
-            //println(MemberDTO(17, "Sonja"))
-
-            when (requestMethod) {
-                Method.GET -> response.append(json.toJsonFromMap(reflection.callFunction(content, request.method, request.resource, null) as MutableMap<Int, MemberDTO>))
-                Method.NONHTTP -> response.append("NONHTTP")
-                else -> response.append(json.toJsonFromMap(utils.getMemberAsMap(reflection.callFunction(content, request.method, request.resource, json.fromJsonToClass(MemberDTO::class, request.body)) as MemberDTO)))
+                    }
+                }
+                if (result != null) {
+                    response.append(result.toString())
+                } else {
+                    // do something to let user know, that his request was bad.
+                }
             }
-            /*val homepage: Homepage = Homepage()
-            response.append(homepage.generate(request.resource.substring(1)))*/
             response.send()
         }
     }
