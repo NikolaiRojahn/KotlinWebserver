@@ -6,7 +6,7 @@ import kotlin.reflect.full.memberProperties
 
 class JSON(){
     //To JSON methods
-    fun toJsonFromMap(membersMap:MutableMap<Int, MemberDTO>): String{
+    fun toJsonFromMap(membersMap:MutableMap<Any, Any>): String{
         var json = ""
         if(membersMap.size > 1) { json += "[\n"}
         membersMap.forEach { json += toJsonBodyByClass(it.value) }

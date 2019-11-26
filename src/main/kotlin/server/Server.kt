@@ -3,10 +3,7 @@ package server
 //DENNE SERVER ER IKKE SAT OP TIL AT KØRE METODER FRA CHOIRCONTENT ENDNU - DE KAN TESTES/KØRES FRA MAIN METODEN I CHOIR CONTENT!!!
 import kotlinx.coroutines.*
 import java.net.ServerSocket
-import kotlin.concurrent.thread
 import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KFunction
-import kotlin.reflect.full.declaredFunctions
 
 
 enum class Method{GET, PUT, POST, DELETE, NONHTTP}
@@ -43,10 +40,14 @@ class Server (val port: Int = 4711) : CoroutineScope{
             //println(MemberDTO(17, "Sonja"))
 
             when (requestMethod) {
-                Method.GET -> response.append(json.toJsonFromMap(reflection.callFunction(content, request.method, request.resource, null) as MutableMap<Int, MemberDTO>))
                 Method.NONHTTP -> response.append("NONHTTP")
-                else -> response.append(json.toJsonFromMap(utils.getMemberAsMap(reflection.callFunction(content, request.method, request.resource, json.fromJsonToClass(MemberDTO::class, request.body)) as MemberDTO)))
+                else -> response.append(json.toJsonFromMap(utils.getMemberAsMap(reflection.callFunction(content, request))))
             }
+
+                //Method.GET -> response.append(json.toJsonFromMap(reflection.callFunction(content, request) as MutableMap<Int, MemberDTO>))
+                //Method.NONHTTP -> response.append("NONHTTP")
+                //else -> response.append(json.toJsonFromMap(utils.getMemberAsMap(reflection.callFunction(content, request) as MemberDTO)))
+            //}
             /*val homepage: Homepage = Homepage()
             response.append(homepage.generate(request.resource.substring(1)))*/
             response.send()

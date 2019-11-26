@@ -1,8 +1,5 @@
 package server
 
-interface WebContent{
-    fun save()
-}
 /**
  * @param filename The filename to persist data to.
  */
@@ -10,18 +7,20 @@ class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
     var members = mutableMapOf<Int, MemberDTO>(
-        7 to MemberDTO(7, "Kurt"),
-        17 to MemberDTO(17, "Sonja")
+        0 to MemberDTO(1, "Nikolai"),
+        1 to MemberDTO(2, "Claus"),
+        2 to MemberDTO(3, "Jörg"),
+        3 to MemberDTO(4, "Morten")
     )
     val nullMessage = "Given member is null"
 
     fun storeMembers(value:MutableMap<Int, MemberDTO>){members = value}
 
     fun setDummyMembers(){
-        members.put(1, MemberDTO(1, "Nikolai"))
-        members.put(2, MemberDTO(2, "Claus"))
-        members.put(3, MemberDTO(3, "Jörg"))
-        members.put(4, MemberDTO(4, "Morten"))
+        members.put(0, MemberDTO(1, "Nikolai"))
+        members.put(1, MemberDTO(2, "Claus"))
+        members.put(2, MemberDTO(3, "Jörg"))
+        members.put(3, MemberDTO(4, "Morten"))
     }
 
     override fun save() {
@@ -61,5 +60,8 @@ class ChoirContent(val filename:String):WebContent
     }
 
     // DELETE /member/id
-    fun deleteMember(member: MemberDTO): MemberDTO? = members.remove(member.id)
+    fun deleteMember(member: MemberDTO): MemberDTO {
+        if(member == null) { nullMessage }
+        return members.remove(member.id) ?: throw Exception("Member with id $member.id not found.".format(member.id))
+    }
 }
