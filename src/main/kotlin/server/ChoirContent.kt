@@ -9,13 +9,13 @@ interface WebContent{
 class ChoirContent(val filename:String):WebContent
 {
     // Local collection of members.
-    val members = mutableMapOf<Int, MemberDTO>(
+    var members = mutableMapOf<Int, MemberDTO>(
         7 to MemberDTO(7, "Kurt"),
         17 to MemberDTO(17, "Sonja")
     )
     val nullMessage = "Given member is null"
 
-    //fun setNewMembers(value:MutableMap<Int, MemberDTO>){members = value}
+    fun storeMembers(value:MutableMap<Int, MemberDTO>){members = value}
 
     fun setDummyMembers(){
         members.put(1, MemberDTO(1, "Nikolai"))
@@ -35,10 +35,8 @@ class ChoirContent(val filename:String):WebContent
 
 
     // GET /member/3
-    fun getMember(id: Int):MutableMap<Int, MemberDTO> {
-        val member:MemberDTO? = members.getOrDefault(id, null)
-        if(member == null) { nullMessage }
-        return mutableMapOf<Int, MemberDTO>((member!!.id to member!!))
+    fun getMember(id: Int):MemberDTO {
+        return members.getOrDefault(id, null) ?: throw Exception("Member with id $id not found.".format(id))
     }
 
     // PUT /member
