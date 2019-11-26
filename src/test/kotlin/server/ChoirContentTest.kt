@@ -41,7 +41,7 @@ class ChoirContentTest
     {
         val member = members[members.keys.last()]
         println("Deleting member with id: " + member!!.id.toString())
-        Assert.assertTrue(content.deleteMember(member))
+        Assert.assertTrue(content.deleteMember(member) == member)
     }
 }
 
