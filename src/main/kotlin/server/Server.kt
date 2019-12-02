@@ -1,6 +1,5 @@
 package server
 
-//DENNE SERVER ER IKKE SAT OP TIL AT KØRE METODER FRA CHOIRCONTENT ENDNU - DE KAN TESTES/KØRES FRA MAIN METODEN I CHOIR CONTENT!!!
 import javafx.application.Application.launch
 import kotlinx.coroutines.*
 import java.net.ServerSocket
@@ -17,11 +16,14 @@ class Server (val port: Int = 4711) : CoroutineScope{
     override val coroutineContext: CoroutineContext
         get() = job
 //    var running = true
-    val webContents: MutableMap<String, WebContent> = mutableMapOf("member" to ChoirContent(""))
+    val webContents: MutableMap<String, WebContent> = mutableMapOf(
+    "member" to ChoirContent(""),
+    "gamer" to ClubContent("")
+)
 
     val json = JSON()
     val utils = Utils()
-    val content = ChoirContent("")
+    //val content = ChoirContent("")
     val reflection = Reflection()
 
     suspend fun handle(request:Request, response:Response)
@@ -53,21 +55,42 @@ class Server (val port: Int = 4711) : CoroutineScope{
 //                    }
 //                }
 
+                var content: Any? = null
 
-                val result: Any? = reflection.callFunction(content as Any, request)
+                if(request.resource != ""){
+                    val contentArr = request.resource.split("/")
+                    println(contentArr)
+                    content = webContents.getOrDefault(contentArr[1], null)
+
+                    val result: Any? = reflection.callFunction(content as Any, request)
 
                 println("*************************")
                 println(result)
                 println("*************************")
-                if (result != null) {
 
 //                    response.append(result.toString())
                     println(json.toJsonFromMap(utils.getMemberAsMap(result)))
                     response.append(json.toJsonFromMap(utils.getMemberAsMap(result)))
                 } else {
-                    //do something to let user know, that his request was bad.
+//                    //do something to let user know, that his request was bad.
                     response.append("NONHTTP")
                 }
+
+
+//                val result: Any? = reflection.callFunction(content as Any, request)
+//
+//                println("*************************")
+//                println(result)
+//                println("*************************")
+//                if (result != null) {
+//
+////                    response.append(result.toString())
+//                    println(json.toJsonFromMap(utils.getMemberAsMap(result)))
+//                    response.append(json.toJsonFromMap(utils.getMemberAsMap(result)))
+//                } else {
+//                    //do something to let user know, that his request was bad.
+//                    response.append("NONHTTP")
+//                }
             }
             response.send()
         }

@@ -7,7 +7,7 @@ import java.nio.charset.Charset
 
 class Request(inputStream: InputStream)
 {
-    val resource: String
+    var resource: String = ""
     val method: Method
     var body: String = ""
     val headers = mutableMapOf<String, String>()
@@ -16,7 +16,8 @@ class Request(inputStream: InputStream)
         var line = inputStream.readLine()
         val parts = line.split(" ")
         if (parts.size != 3) { // We MUST have a HTTP Method, a resource and a HTTP version in parts or it is an invalid HTTP request.
-            resource = ""
+            //resource = ""
+            println(headers)
             method = Method.NONHTTP
         }
         else {

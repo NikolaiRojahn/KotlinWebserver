@@ -4,7 +4,7 @@ import kotlin.reflect.full.declaredFunctions
 
 class Reflection {
 
-    val json = JSON()
+    //val json = JSON()
 
     fun callFunction(content: Any, request: Request): Any? {
         var resource = request.resource
@@ -40,7 +40,7 @@ class Reflection {
                 else -> {
                     val kClass = Class.forName(classTemp).kotlin
                     //val v1 = json.fromJsonToClass(kClass, request.body)
-                    val v1 = json.fromJsonToObjectInstance(kClass, request.body)
+                    val v1 = JSON().fromJsonToObjectInstance(kClass, request.body)
                     return function.call(content, v1)
                 }
             }
@@ -93,7 +93,7 @@ class Reflection {
 //                // otherwise, we are putting/posting, the argument will be in the body.
 //                else -> {
 //                    val kClass = Class.forName(classTemp).kotlin
-//                    v1 = body?.let { JSON().fromJsonToClass(kClass, it) }
+//                    v1 = body?.let { JSON().fromJsonToObjectInstance(kClass, it) }
 //                    println(v1)
 //                }
 //            }
