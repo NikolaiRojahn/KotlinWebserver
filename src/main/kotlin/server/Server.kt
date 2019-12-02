@@ -1,6 +1,7 @@
 package server
 
 //DENNE SERVER ER IKKE SAT OP TIL AT KØRE METODER FRA CHOIRCONTENT ENDNU - DE KAN TESTES/KØRES FRA MAIN METODEN I CHOIR CONTENT!!!
+import javafx.application.Application.launch
 import kotlinx.coroutines.*
 import java.net.ServerSocket
 import kotlin.coroutines.CoroutineContext
@@ -24,6 +25,7 @@ class Server (val port: Int = 4711) : CoroutineScope{
     val reflection = Reflection()
 
     suspend fun handle(request:Request, response:Response)
+    //fun handle(request:Request, response:Response)
     {
         // Coroutines need a context to store state of local variables if suspended.
         withContext(Dispatchers.Default){
@@ -35,27 +37,40 @@ class Server (val port: Int = 4711) : CoroutineScope{
             3b. Tell user to stop bugging us with illegitimate requests.
             */
 
-            val reflection = Reflection()
-            val (methodName, parts) = reflection.buildMethodName(request.method, request.resource)
-            val content = webContents[parts?.get(0)]
-            if (content != null) {
-                val result: Any? = methodName?.let {
-                    if (parts != null) {
-                        reflection.callFunction(content as Any, it, parts, request.body)
-                    }
-                }
+            //val reflection = Reflection()
+            //val (methodName, parts) = reflection.buildMethodName(request.method, request.resource)
+            //val content = webContents[parts?.get(0)]
+            //println(methodName)
+            //println(parts)
+            //println(content)
+//            if (content != null) {
+//                val result: Any? = methodName?.let {
+//                    if (parts != null) {
+//                        println(it)
+//                        println(parts)
+//                        println(content)
+//                        reflection.callFunction(content as Any, it, parts, request.body)
+//                    }
+//                }
+
+
+                val result: Any? = reflection.callFunction(content as Any, request)
+
+                println("*************************")
+                println(result)
+                println("*************************")
                 if (result != null) {
 
 //                    response.append(result.toString())
+                    println(json.toJsonFromMap(utils.getMemberAsMap(result)))
                     response.append(json.toJsonFromMap(utils.getMemberAsMap(result)))
                 } else {
-                    // do something to let user know, that his request was bad.
+                    //do something to let user know, that his request was bad.
                     response.append("NONHTTP")
                 }
             }
             response.send()
         }
-    }
 
     fun start(){
 
