@@ -23,6 +23,7 @@ class Response(val outputStream: OutputStream)
             Content-Type: application/json; charset=UTF-8
             Content-length: ${body.length}
             Connection: keep-alive
+            Access-Control-Allow-Origin: *
         """.trimIndent()
 
         val writer = outputStream.bufferedWriter()
