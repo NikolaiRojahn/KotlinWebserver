@@ -25,6 +25,7 @@ class ClubContent(val filename:String):WebContent
         if(gamer == null) { nullMessage }
         if(gamers.containsKey(gamer.id)) {
             gamers.replace(gamer.id, gamer)
+            save()
         }
         return postGamer(gamer)
     }
@@ -35,6 +36,7 @@ class ClubContent(val filename:String):WebContent
         }
         if (!gamers.containsKey(gamer.id)) {
             gamers[gamer.id] = gamer
+            save()
             return gamer
         }
         return gamer
@@ -43,11 +45,13 @@ class ClubContent(val filename:String):WebContent
     fun deleteGamer(id: Int): GamerDTO {
         val gamer = getGamer(id)
         if(gamer == null) { nullMessage }
-        return gamers.remove(gamer.id) ?: throw Exception("Member with id $gamer.id not found.".format(gamer.id))
+        val gamerNew: GamerDTO = gamers.remove(gamer.id) ?: throw Exception("Member with id $gamer.id not found.".format(gamer.id))
+        save()
+        return gamerNew
     }
 
     override fun save() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        utils.writeToFile(filename, JSON().toJsonFromMap(Utils().getMemberAsMap(gamers)))
     }
 
 }

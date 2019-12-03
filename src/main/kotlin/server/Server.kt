@@ -17,8 +17,8 @@ class Server (val port: Int = 4711) : CoroutineScope{
         get() = job
 //    var running = true
     val webContents: MutableMap<String, WebContent> = mutableMapOf(
-    "member" to ChoirContent(""),
-    "gamer" to ClubContent("")
+    "member" to ChoirContent("members.txt"),
+    "gamer" to ClubContent("gamers.txt")
 )
 
     val json = JSON()

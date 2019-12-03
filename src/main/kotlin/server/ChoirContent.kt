@@ -1,5 +1,7 @@
 package server
 
+import utils.*
+
 /**
  * @param filename The filename to persist data to.
  */
@@ -25,8 +27,7 @@ class ChoirContent(val filename:String):WebContent
 
     override fun save() {
         // Here we will persist the collection to a file.
-
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        utils.writeToFile(filename, JSON().toJsonFromMap(Utils().getMemberAsMap(members)))
     }
 
     // GET /member
@@ -43,6 +44,7 @@ class ChoirContent(val filename:String):WebContent
         if(member == null) { nullMessage }
         if(members.containsKey(member.id)) {
             members.replace(member.id, member)
+            save()
         }
         return postMember(member)
     }
@@ -54,6 +56,7 @@ class ChoirContent(val filename:String):WebContent
         }
         if (!members.containsKey(member.id)) {
             members[member.id] = member
+            save()
             return member
         }
         return member
@@ -62,6 +65,8 @@ class ChoirContent(val filename:String):WebContent
     // DELETE /member/id
     fun deleteMember(member: MemberDTO): MemberDTO {
         if(member == null) { nullMessage }
-        return members.remove(member.id) ?: throw Exception("Member with id $member.id not found.".format(member.id))
+        val member: MemberDTO = members.remove(member.id) ?: throw Exception("Member with id $member.id not found.".format(member.id))
+        save()
+        return member
     }
 }
