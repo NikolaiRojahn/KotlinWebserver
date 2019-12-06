@@ -38,6 +38,9 @@ class Server (val port: Int = 4711) : CoroutineScope{
             3b. Tell user to stop bugging us with illegitimate requests.
             */
 
+            if(request.resource == "/stop"){
+                stop()
+            }
             val reflection = Reflection()
             val (methodName, parts) = reflection.buildMethodName(request.method, request.resource)
             val content = webContents[parts?.get(0)]
