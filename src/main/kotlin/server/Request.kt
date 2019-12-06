@@ -17,7 +17,7 @@ class Request(inputStream: InputStream)
         val parts = line.split(" ")
         if (parts.size != 3) { // We MUST have a HTTP Method, a resource and a HTTP version in parts or it is an invalid HTTP request.
             //resource = ""
-            println(headers)
+            //println(headers)
             method = Method.NONHTTP
         }
         else {

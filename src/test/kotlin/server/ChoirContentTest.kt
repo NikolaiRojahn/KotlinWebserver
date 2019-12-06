@@ -33,7 +33,7 @@ class ChoirContentTest
     {
         val member = members[members.keys.first()]
         println("Finding member with id: " + member!!.id.toString())
-        Assert.assertEquals(member.id, content.getMember(member.id)!!.id)
+        Assert.assertEquals(member.id, content.getMember(member.id).id)
     }
 
     @Test

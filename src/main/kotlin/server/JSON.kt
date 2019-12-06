@@ -47,17 +47,6 @@ class JSON(){
     }
 
     //From JSON methods
-//    fun fromJsonToClass(type: KClass<*>, json: String): Any? {
-//        val member = fromJsonToObjectInstance(type, json)
-//        val typeClassArr = type.toString().split(" ")
-//        val typeClass = Class.forName(typeClassArr[typeClassArr.size - 1])
-//        println("#######: ${member}")
-//        //val typeClass<member> = Class.forName(typeClassArr[typeClassArr.size - 1])
-//        if (member is MemberDTO)
-//            return MemberDTO(member.id, member.name)
-//        return null
-//    }
-
     fun fromJsonToObjectInstance(type: KClass<*>, json: String): Any {
         val pairs = fromJsonNameAndValuesToMap(json)
 
@@ -73,16 +62,6 @@ class JSON(){
             val value = fromJsonCorrectValueFormat(text, type)
             parameterValues[index] = value
         }
-//        val parameterValues = arrayOf<Any?>(null, null)
-//        for (parameter in initializer.parameters) {
-//            val name = parameter.name
-//            val index = parameter.index
-//            val type = parameter.type.classifier
-//            val text = pairs[name]
-//            if (type == null || text == null) continue
-//            val value = fromJsonCorrectValueFormat(text, type)
-//            parameterValues[index] = value
-//        }
 
         return initializer.call(*parameterValues)
     }
@@ -109,56 +88,3 @@ class JSON(){
     }
 
 }
-
-//    //To JSON methods
-//    fun toJsonFromMap(membersMap:MutableMap<Any, Any>): String{
-////        var endComma = false
-////        if(membersMap.size > 1) {
-////            endComma = true
-////        }
-//        var json = ""
-//        if(membersMap.size > 1) { json += "[\n"}
-//        membersMap.forEach { json += toJsonBodyByClass(it.value) }
-//        if(membersMap.size > 1) { json += "]"}
-//        //if(membersMap.size > 1) { json = toJsonRemoveLastComma(json) }
-//        //json = toJsonRemoveLastComma(json)
-//        return json
-//    }
-//
-//    private fun toJsonBodyByClass(what: Any): String {
-//        return what::class.memberProperties
-//            .map { """${indent(4)}"${it.name}": ${toJsonCorrectValueFormat(it.call(what))}""" }
-//            .joinToString(",\n", "${indent(2)}{\n", "\n${indent(2)}},\n")
-//    }
-//
-////    private fun toJsonBodyByClass(what: Any): String =
-////        what::class.memberProperties
-////            .map { """${indent(4)}"${it.name}": ${toJsonCorrectValueFormat(it.call(what))}""" }
-////            .joinToString(",\n", "${indent(2)}{\n",
-////                "\n${indent(2)}},\n")
-//
-//    private fun toJsonCorrectValueFormat(value: Any?): String =
-//        when (value) {
-//            null -> "null"
-//            is Int -> value.toString()
-//            is Double -> value.toString()
-//            is String -> """"$value""""
-//            else -> toJsonBodyByClass(value)
-//        }
-
-//    private fun toJsonRemoveLastComma(jsonStr:String): String =
-//        jsonStr.substring(0, jsonStr.length - 3) + jsonStr.substring(jsonStr.length - 2)
-
-/*
-fun main() {
-    val jsonStr = """
-        {
-            "id": 17,
-            "name": "Sonja"
-        }
-        """.trimIndent()
-    val json = JSON()
-    val member = json.fromJsonToObjectInstance(MemberDTO::class, jsonStr)
-    if (member is MemberDTO)
-        println("${member.name} har id ${member.id}" )
-}*/

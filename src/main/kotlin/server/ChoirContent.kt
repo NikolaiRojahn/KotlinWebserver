@@ -1,13 +1,11 @@
 package server
 
-import utils.*
-
 /**
  * @param filename The filename to persist data to.
  */
 class ChoirContent(val filename:String):WebContent
 {
-    // Local collection of members.
+    //Local collection of members.
     var members = mutableMapOf<Int, MemberDTO>(
         1 to MemberDTO(1, "Nikolai"),
         2 to MemberDTO(2, "Claus"),
@@ -17,18 +15,6 @@ class ChoirContent(val filename:String):WebContent
     val nullMessage = "Given member is null"
 
     fun storeMembers(value:MutableMap<Int, MemberDTO>){members = value}
-
-    fun setDummyMembers(){
-        members.put(1, MemberDTO(1, "Nikolai"))
-        members.put(2, MemberDTO(2, "Claus"))
-        members.put(3, MemberDTO(3, "Jörg"))
-        members.put(4, MemberDTO(4, "Morten"))
-    }
-
-    override fun save() {
-        // Here we will persist the collection to a file.
-        utils.writeToFile(filename, JSON().toJsonFromMap(Utils().getMemberAsMap(members)))
-    }
 
     // GET /member
     fun getMember():MutableMap<Int, MemberDTO> = members
@@ -45,6 +31,7 @@ class ChoirContent(val filename:String):WebContent
         if(members.containsKey(member.id)) {
             members.replace(member.id, member)
             save()
+            return member
         }
         return postMember(member)
     }
@@ -57,7 +44,7 @@ class ChoirContent(val filename:String):WebContent
         if (!members.containsKey(member.id)) {
             members[member.id] = member
             save()
-            return member
+            //return member
         }
         return member
     }
@@ -68,5 +55,10 @@ class ChoirContent(val filename:String):WebContent
         val member: MemberDTO = members.remove(member.id) ?: throw Exception("Member with id $member.id not found.".format(member.id))
         save()
         return member
+    }
+
+    override fun save() {
+        // Here we will persist the collection to a file.
+        utils.writeToFile(filename, JSON().toJsonFromMap(Utils().getMemberAsMap(members)))
     }
 }

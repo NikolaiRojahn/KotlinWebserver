@@ -11,7 +11,17 @@
   },
   {
     "id": 4,
-    "nickname": "Morten",
-    "score": 4000
+    "nickname": "PUT-Edited",
+    "score": 40000
+  },
+  {
+    "id": 9,
+    "nickname": "PUT->POST-Edited",
+    "score": 9000
+  },
+  {
+    "id": 8,
+    "nickname": "POST-Edited",
+    "score": 8000
   }
 ]

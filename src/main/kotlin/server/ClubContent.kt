@@ -15,6 +15,8 @@ class ClubContent(val filename:String):WebContent
 
     val nullMessage = "Given member is null"
 
+    fun storeGamers(value:MutableMap<Int, GamerDTO>){gamers = value}
+
     fun getGamer(): MutableMap<Int, GamerDTO> = gamers
 
     fun getGamer(id: Int): GamerDTO {
@@ -26,6 +28,7 @@ class ClubContent(val filename:String):WebContent
         if(gamers.containsKey(gamer.id)) {
             gamers.replace(gamer.id, gamer)
             save()
+            return gamer
         }
         return postGamer(gamer)
     }
@@ -37,7 +40,7 @@ class ClubContent(val filename:String):WebContent
         if (!gamers.containsKey(gamer.id)) {
             gamers[gamer.id] = gamer
             save()
-            return gamer
+            //return gamer
         }
         return gamer
     }

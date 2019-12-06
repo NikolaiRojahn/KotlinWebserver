@@ -1,7 +1,7 @@
 [
   {
     "id": 2,
-    "name": "Claus"
+    "name": "PUT-Edited"
   },
   {
     "id": 3,
@@ -10,5 +10,13 @@
   {
     "id": 4,
     "name": "Morten"
+  },
+  {
+    "id": 9,
+    "name": "PUT->POST-Edited"
+  },
+  {
+    "id": 8,
+    "name": "POST-Edited"
   }
 ]
