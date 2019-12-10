@@ -15,13 +15,14 @@ class Response(val outputStream: OutputStream)
     fun append(text:String)
     {
         body.append(text)
+        contentLength = text.length + 1
     }
     fun send()
     {
         val head = """            
             HTTP/1.1 200 OK
             Content-Type: application/json; charset=UTF-8
-            Content-length: ${body.length}
+            Content-length: ${contentLength}
             Connection: keep-alive
             Access-Control-Allow-Origin: *
         """.trimIndent()

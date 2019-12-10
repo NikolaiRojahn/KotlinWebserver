@@ -8,24 +8,28 @@ class JSON(){
 
     //To JSON methods
     fun toJsonFromMap(membersMap:MutableMap<Any, Any>): String{
-        var endComma = true
-        var json = ""
         var count = 0
-        if(membersMap.size > 1) { json += "[\n"}
-        membersMap.forEach {
-            count += 1
-            if (count == membersMap.size){ endComma = false }
-            json += toJsonBodyByClass(it.value, endComma)
+        var json = StringBuilder()
+        if(membersMap.size > 1) {
+            json.append("[")
         }
-        if(membersMap.size > 1) { json += "]"}
-        return json
+        membersMap.forEach {
+            count++
+            if(membersMap.size == count){
+                json.append(toJsonBodyByClass(it.value, false))
+            } else {
+                json.append(toJsonBodyByClass(it.value, true))
+            }}
+        if(membersMap.size > 1){
+            json.append("]")
+        }
+        return json.toString()
     }
 
     private fun toJsonBodyByClass(what: Any, endComma: Boolean): String {
         return what::class.memberProperties
-            .map { """${indent(4)}"${it.name}": ${toJsonCorrectValueFormat(it.call(what),endComma)}""" }
-            .joinToString(",\n", "${indent(2)}{\n",
-                if(endComma) {"\n${indent(2)}},\n"} else{"\n${indent(2)}}\n"}
+            .map { """"${it.name}": ${toJsonCorrectValueFormat(it.call(what),endComma)}""" }
+            .joinToString(",", "{", if(endComma) {"},"} else{"}"}
             )
     }
 
@@ -37,14 +41,6 @@ class JSON(){
             is String -> """"$value""""
             else -> toJsonBodyByClass(value, endComma)
         }
-
-    private fun indent(count: Int): String{
-        val strIndent = " "
-        var strIndentFinal = ""
-        for (x in 0 until count)
-            strIndentFinal += strIndent
-        return strIndentFinal
-    }
 
     //From JSON methods
     fun fromJsonToObjectInstance(type: KClass<*>, json: String): Any {
