@@ -72,7 +72,6 @@ class Server (val port: Int = 4711) : CoroutineScope{
 //
 //                    val result: Any? = reflection.callFunction(content as Any, request)
             //VIRKER!!!--------------
-
                     response.append(json.toJsonFromMap(utilsClass.getMemberAsMap(result)))
                 } else {
                    //do something to let user know, that his request was bad.
@@ -108,6 +107,7 @@ class Server (val port: Int = 4711) : CoroutineScope{
                      // If we use complete() it will wait for its children coroutines to complete.
 
         print("Server stopped!")
+        System.exit(-1)
     }
 }
 
