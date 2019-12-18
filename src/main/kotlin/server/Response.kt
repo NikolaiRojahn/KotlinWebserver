@@ -12,7 +12,7 @@ class Response(val outputStream: OutputStream)
     var contentLength = 0
 
     // Extension function on String class to return length of UTF_8 representation.
-    fun String.utf8Length = this.toByteArray(Charsets.UTF_8).size
+    fun String.utf8Length() = this.toByteArray(Charsets.UTF_8).size
     fun append(text:String)
     {
         body.append(text)
