@@ -18,7 +18,18 @@ class Response(val outputStream: OutputStream)
         body.append(text)
         contentLength = text.utf8Length()
     }
-    fun send()
+
+    fun createOptionsHeader():String
+    {
+        val head:String = """
+            HTTP/1.1 204 No Content
+            Allow: OPTIONS, GET, HEAD, POST
+            Cache-Control: max-age=604800
+        """.trimIndent()
+        return head
+    }
+
+    fun createOkHeader():String
     {
         val head = """            
             HTTP/1.1 200 OK
@@ -28,11 +39,20 @@ class Response(val outputStream: OutputStream)
             Access-Control-Allow-Origin: *
         """.trimIndent()
 
+        return head
+
+
+    }
+
+    fun send(header:String)
+    {
         val writer = outputStream.bufferedWriter()
-        writer.write(head)
-        writer.newLine()
-        writer.newLine()
-        writer.write(body.toString())
+        writer.write(header)
+        if (body != null) {
+            writer.newLine()
+            writer.newLine()
+            writer.write(body.toString())
+        }
         writer.close()
     }
 }
