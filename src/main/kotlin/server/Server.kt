@@ -55,10 +55,11 @@ class Server (val port: Int = 4711) : CoroutineScope{
                     //do something to let user know, that his request was bad.
                     response.append("NONHTTP")
                 }
+                response.send(response.createOkHeader())
             }
-            response.send(response.createOkHeader())
+
         }
-        }
+    }
 
     fun start(){
 

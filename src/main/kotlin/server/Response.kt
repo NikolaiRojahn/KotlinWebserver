@@ -48,8 +48,8 @@ class Response(val outputStream: OutputStream)
     {
         val writer = outputStream.bufferedWriter()
         writer.write(header)
-        if (body != null) {
-            writer.newLine()
+        writer.newLine()
+        if (body.length > 0) {
             writer.newLine()
             writer.write(body.toString())
         }
