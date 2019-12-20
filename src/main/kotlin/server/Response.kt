@@ -22,9 +22,11 @@ class Response(val outputStream: OutputStream)
     fun createOptionsHeader():String
     {
         val head:String = """
-            HTTP/1.1 204 No Content
-            Allow: OPTIONS, GET, HEAD, POST
-            Cache-Control: max-age=604800
+            HTTP/1.1 204 No Content            
+            Access-Control-Allow-Origin: *
+            Access-Control-Allow-Methods: OPTIONS, GET, HEAD, POST, DELETE
+            Access-Control-Allow-Headers: *
+            Access-Control-Max-Age: 86400                 
         """.trimIndent()
         return head
     }
@@ -37,6 +39,7 @@ class Response(val outputStream: OutputStream)
             Content-length: ${contentLength}
             Connection: keep-alive
             Access-Control-Allow-Origin: *
+            Access-Control-Allow-Method: POST, PUT, GET, OPTIONS
         """.trimIndent()
 
         return head
@@ -49,8 +52,8 @@ class Response(val outputStream: OutputStream)
         val writer = outputStream.bufferedWriter()
         writer.write(header)
         writer.newLine()
-        if (body.length > 0) {
-            writer.newLine()
+        writer.newLine()
+        if (contentLength > 0) {
             writer.write(body.toString())
         }
         writer.close()

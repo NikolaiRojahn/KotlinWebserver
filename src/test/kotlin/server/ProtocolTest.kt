@@ -41,7 +41,7 @@ class ProtocolTest
         val output = ByteArrayOutputStream(1024)
         val response = Response(output)
         response.append("<p>Hello Kurt!</p>")
-        response.send()
+        response.send(response.createOkHeader())
 
         assertEquals(responseText, output.toString())
     }
