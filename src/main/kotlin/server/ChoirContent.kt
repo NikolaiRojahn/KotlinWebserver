@@ -38,9 +38,6 @@ class ChoirContent(val filename:String):WebContent
 
     // POST /member
     fun postMember(member: MemberDTO): MemberDTO {
-        if (member == null) {
-            nullMessage
-        }
         if (!members.containsKey(member.id)) {
             members[member.id] = member
             save()

@@ -39,7 +39,7 @@ class Response(val outputStream: OutputStream)
             Content-length: ${contentLength}
             Connection: keep-alive
             Access-Control-Allow-Origin: *
-            Access-Control-Allow-Method: POST, PUT, GET, OPTIONS
+            Access-Control-Allow-Methods: POST, PUT, GET, OPTIONS
         """.trimIndent()
 
         return head

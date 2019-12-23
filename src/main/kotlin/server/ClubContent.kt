@@ -33,12 +33,11 @@ class ClubContent(val filename:String):WebContent
         return postGamer(gamer)
     }
 
-    fun postGamer(gamer: GamerDTO): GamerDTO {
-        if (gamer == null) {
-            nullMessage
-        }
-        if (!gamers.containsKey(gamer.id)) {
-            gamers[gamer.id] = gamer
+    private fun postGamer(gamer: GamerDTO): GamerDTO {
+        var g = GamerDTO(gamer.id, gamer.nickname, gamer.score)
+        println(g)
+        if (!gamers.containsKey(g.id)) {
+            gamers[g.id] = g
             save()
             //return gamer
         }
