@@ -25,7 +25,8 @@ class ClubContent(val filename:String):WebContent
 
     fun putGamer(gamer: GamerDTO): GamerDTO {
         if(gamer == null) { nullMessage }
-        if(gamers.containsKey(gamer.id)) {
+        if (gamers.has(gamer))
+        {
             gamers.replace(gamer.id, gamer)
             save()
             return gamer
@@ -37,14 +38,18 @@ class ClubContent(val filename:String):WebContent
         if (gamer == null) {
             nullMessage
         }
-        if (!gamers.containsKey(gamer.id)) {
+        if (!gamers.has(gamer)) {
             gamers[gamer.id] = gamer
             save()
             //return gamer
         }
         return gamer
     }
-    // deletes a gamer but resturns the vale
+
+    // Extension method on MutableMap<Int, GamerDTO> to determine the existence of a particular GamerDTO in the map.
+    fun MutableMap<Int, GamerDTO>.has(gamer:GamerDTO):Boolean{return this.containsKey(gamer.id)}
+
+    // deletes a gamer and returns the value
     fun deleteGamer(id: Int): GamerDTO {
         val gamer = getGamer(id)
         if(gamer == null) { nullMessage }

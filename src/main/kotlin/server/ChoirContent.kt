@@ -12,6 +12,8 @@ class ChoirContent(val filename:String):WebContent
         3 to MemberDTO(3, "Jörg"),
         4 to MemberDTO(4, "Morten")
     )
+    // Extend members with a 'has' method.
+    fun MutableMap<Int, MemberDTO>.has(member:MemberDTO):Boolean{return this.containsKey(member.id)}
     val nullMessage = "Given member is null"
 
     fun storeMembers(value:MutableMap<Int, MemberDTO>){members = value}
@@ -27,8 +29,8 @@ class ChoirContent(val filename:String):WebContent
 
     // PUT /member
     fun putMember(member: MemberDTO): MemberDTO {
-        if(member == null) { nullMessage }
-        if(members.containsKey(member.id)) {
+        if(member == null) { nullMessage } // will never happen.
+        if(members.has(member)) {
             members.replace(member.id, member)
             save()
             return member
@@ -38,10 +40,10 @@ class ChoirContent(val filename:String):WebContent
 
     // POST /member
     fun postMember(member: MemberDTO): MemberDTO {
-        if (member == null) {
+        if (member == null) { // this will never happen since member is not nullable.
             nullMessage
         }
-        if (!members.containsKey(member.id)) {
+        if (!members.has(member)) {
             members[member.id] = member
             save()
             //return member

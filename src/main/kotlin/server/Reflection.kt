@@ -3,48 +3,6 @@ package server
 import kotlin.reflect.full.declaredFunctions
 
 class Reflection {
-
-    //VIRKER!!!-------------
-//    fun callFunction(content: Any, request: Request): Any? {
-//        var resource = request.resource
-//        if(!(request.body.isEmpty() || request.body == null)) { resource += "/" + request.body }
-//        val method = request.method
-//        val parts = resource.split("/").filter { !it.isEmpty() }
-//
-//        if (parts.size == 0) return null
-//        val methodName = method.toString().toLowerCase() + (parts[0].capitalize())
-//        val type = content::class
-//
-//        val function = type.declaredFunctions
-//            .filter { it.name == methodName }
-//            .filter { it.parameters.size == parts.size }
-//            .firstOrNull()
-//
-//        if (function == null) { return null }
-//        if (function.parameters.size > 1) {
-//            val p = function.parameters[1]
-//            val classArr = p.type.classifier.toString().split(" ")
-//            val classTemp = classArr[classArr.size - 1]
-//            when (p.type.classifier) {
-//                Int::class -> {
-//                    val v1 = parts[1].toInt()
-//                    return function.call(content, v1)
-//                }
-//                String::class -> {
-//                    val v1 = parts[1]
-//                    return function.call(content, v1)
-//                }
-//                else -> {
-//                    val kClass = Class.forName(classTemp).kotlin
-//                    val v1 = JSON().fromJsonToObjectInstance(kClass, request.body)
-//                    return function.call(content, v1)
-//                }
-//            }
-//        } else // no parameters required.
-//            return function.call(content)
-//    }
-    //VIRKER!!!-------------
-
     fun buildMethodName(method: Method, resource: String) : Pair<String?, MutableList<String>?>{
         // resource is passed in as e.g. /members, we need only the 'members' part.
         val parts:MutableList<String> = resource.split("/").filter{ it.isNotEmpty() } as MutableList<String>

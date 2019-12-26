@@ -59,7 +59,7 @@ class JSON(){
             parameterValues[index] = value
         }
 
-        return initializer.call(*parameterValues)
+        return initializer.call(*parameterValues) // * = spread operator
     }
 
     private fun fromJsonCorrectValueFormat(text: String, type: KClassifier): Any? =

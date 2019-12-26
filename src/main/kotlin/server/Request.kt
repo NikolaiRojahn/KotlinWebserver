@@ -22,7 +22,7 @@ class Request(inputStream: InputStream)
         }
         else {
             resource = parts[1]
-            method = Method.valueOf(parts[0])
+            method = Method.valueOf(parts[0].toUpperCase())
         }
 
         line = inputStream.readLine()
