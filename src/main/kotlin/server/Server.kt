@@ -34,7 +34,8 @@ class Server (val port: Int = 4711) : CoroutineScope{
             4a. Convert result of method call to json.
             3b. Tell user to stop bugging us with illegitimate requests.
             */
-
+            println(request.method)
+            println(response)
             if (request.resource == "/stop") {
                 stop()
             }
