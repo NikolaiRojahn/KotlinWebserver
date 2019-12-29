@@ -1,0 +1,4 @@
+Kernemetoder i content skal returnere objekterne og ikke maps af objekterne.
+UTils metoder til at pakke objekter i maps
+
+Json skal fungere med alt - ikke kun MemberDTO.
